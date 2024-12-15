@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Response System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2, h3 {
+            color: #007bff;
+        }
+
+        .city-map {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            justify-items: center;
+        }
+
+        .zone {
+            width: 100%;
+            max-width: 150px;
+            height: 80px;
+            background: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .zone:hover {
+            transform: scale(1.05);
+            background: #0056b3;
+        }
+
+        .road {
+            width: 10px;
+            height: 40px;
+            background-color: gray;
+            border-radius: 4px;
+        }
+
+        form {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        select, button {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        select:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 4px #007bff;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .results h3 {
+            margin-bottom: 10px;
+        }
+
+        .results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results li {
+            padding: 8px;
+            margin: 5px 0;
+            background: #e9ecef;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>Emergency Response System</header>
+    <div class="container">
+        <h2>City Map</h2>
+        <div class="city-map">
+            <div class="zone">Zone 0<br>Residential Area 1</div>
+            <div class="zone">Zone 1<br>Residential Area 2</div>
+            <div class="zone">Zone 2<br>Hospital</div>
+            <div class="zone">Zone 3<br>Police Station</div>
+            <div class="zone">Zone 4<br>Fire Station</div>
+        </div>
+
+        <h3>Emergency Response</h3>
+        <form id="path-form" method="POST" action="/">
+            <label for="emergency-type">Select Emergency Type:</label>
+            <select name="emergency_type" id="emergency-type">
+                <option value="1">Fire</option>
+                <option value="2">Medical</option>
+                <option value="3">Police</option>
+                <option value="4">General Emergency</option>
+            </select>
+            <button type="submit">Find Shortest Path</button>
+        </form>
+
+        {% if result %}
+        <div class="results">
+            <h3>Shortest Travel Times</h3>
+            <p>From {{ result['emergencyType'] }} (Zone {{ result['src'] }}):</p>
+            <ul>
+                {% for zone, time in result['distances'].items() %}
+                <li>Zone {{ zone }}: {{ time }} mins</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
